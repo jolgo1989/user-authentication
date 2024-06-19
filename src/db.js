@@ -1,9 +1,4 @@
 import mongoose from "mongoose"; // Módulo para conectar Mongo db
-import dotenv from 'dotenv';
-
-// Cargar las variables de entorno desde el archivo .env
-dotenv.config();
-
 
 export const connectDB = async () => {
     try {
