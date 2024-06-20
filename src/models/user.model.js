@@ -2,7 +2,7 @@ import mongoose from "mongoose";//Modulo para conectarse a mongodb y crear el es
 
 //El esquema lo creamos con la libreria de mongoose y es la estructura que indica cual es la forma en la que están estructurados los documentos que se almacenan en una colección de MongoDB.
 const userSchema = new mongoose.Schema({
-    userName: {
+    username: {
         type: String,//Tipo de dato string
         require: true,//Campo requerido
         trim: true//Metodo para eliminar espacio en blanco " jolgo " el metodo string eliminara los eapcios enblanco "jolgo"
