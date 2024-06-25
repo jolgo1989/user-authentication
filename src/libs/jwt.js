@@ -1,7 +1,9 @@
-import jwt from 'jsonwebtoken'//Modulo para crear token
 import { TOKEN_SECRET } from "../config.js";
+import jwt from 'jsonwebtoken'//Modulo para crear token
 
 export const createAccesToken = (payload) => {
+
+    const TOKEN_SECRETr = process.env.TOKEN_SECRET;
 
     return new Promise((resolve, reject) => {
         //Generar tokens
@@ -11,7 +13,7 @@ export const createAccesToken = (payload) => {
             // },
             payload,
             // Llave para crear un token
-            TOKEN_SECRET, {
+            TOKEN_SECRETr, {
 
             expiresIn: '1d'
         },

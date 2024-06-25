@@ -4,9 +4,6 @@ import User from '../models/user.model.js'
 import bcrypt from 'bcryptjs'//Modulo para encriptar contraseña
 import { createAccesToken } from '../libs/jwt.js'
 
-
-
-
 // Función para registrar un nuevo usuario
 export const register = async (req, res) => {
     // Desestructuración del objeto req.body para obtener email, password y username
@@ -61,9 +58,54 @@ export const register = async (req, res) => {
 
 }
 
+// Función para registrar un nuevo usuario
+export const login = async (req, res) => {
+
+    const { email, password } = req.body
+
+    try {
+
+        //Metodo para buscar un usario
+        const userFound = await User.findOne({ email })
+        //Si el usuario no es encontrado arrojar un mensaje
+        if (!userFound) return res.status(400).json({ message: 'Usuario no encontrado' })
+
+        //Si el usuario es encontrado comparar la contraseña con el userFound.password
+        const isMatch = await bcrypt.compare(password, userFound.password)
+
+        //Si su contraseña no coincide retornar mensaje y codigo de estado
+        if (!isMatch) return res.status(400).json({ message: 'contraeña incorrecta' })
+
+        //Crear el token
+        const token = await createAccesToken({ id: userFound._id })
+
+        res.cookie('token', token)
+        res.json({//Enviar la respuesta
+            id: userFound._id,
+            username: userFound.username,
+            email: userFound.email,
+            createAt: userFound.createdAt,
+            updatedAt: userFound.updatedAt
+        })
+
+    } catch (error) {
+        //Responder al cliente con un codigo de estado
+        res.status(500).json({ message: error.message })
+    }
+
+}
+
+// función logout que se utiliza para cerrar la sesión de un usuario
+export const logout = (req, res) => {
+    res.cookie('token', '', {
+        expires: new Date(0)
+    })
+    return res.sendStatus(200)
+}
+
 
 //? NOTA:Los metodos comentados son funciones que puedes utilizar de prueba
-export const login = (req, res) => res.send('login')
+// export const login = (req, res) => res.send('login')
 
 // Crear funciones para procesar peticiones
 //?Metodo para observar si la ruta trabaja correctamente
