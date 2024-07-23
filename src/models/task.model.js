@@ -8,8 +8,8 @@ const taskSchema = new mongoose.Schema({
         type: String,
         require: true
     }, date: {
-        type: String,
-        require: true
+        type: Date,
+        default: Date.now
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
