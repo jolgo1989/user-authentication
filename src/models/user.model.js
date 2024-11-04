@@ -24,6 +24,5 @@ const userSchema = new mongoose.Schema({
 })
 
 export default mongoose.model('User', userSchema)//User es el nombre del schema que hemos creado import express from 'express'
-import morgan from 'morgan'
 
-// NOTA: un schema ayuda a definir, validar y manejar los datos de manera estructurada y eficiente, garantizando la consistencia y calidad de los datos en tu aplicación.
+// NOTA: un schema ayuda a definir, validar y manejar los datos de manera estructurada y eficiente, garantizando la consistencia y calidad de los datos en la aplicación.
