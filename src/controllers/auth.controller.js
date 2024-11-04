@@ -1,5 +1,7 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs'//Modulo para encriptar contraseña
+import { createAccesToken } from '../libs/jwt.js'//Modulo para encriptar contraseña
+
 
 
 export const register = async (req, res) => {
@@ -13,7 +15,9 @@ export const register = async (req, res) => {
             email,
             password: passwordHash,
         });
-        const userSaved = await newUser.save();//Metodo para gusar un usuario a la db
+        const userSaved = await newUser.save();//Metodo para guardar un usuario a la db
+        const token = await createAccesToken({ id: userSaved._id })//creación del token
+        res.cookie('token', token)//Guardar el token en una cookie
         res.json({//Mostrar datos especificos al momento de hacer un post
             id: userSaved._id,
             username: userSaved.username,
@@ -26,7 +30,7 @@ export const register = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error al registrar el usuario');
+        res.status(500).json({ message: error.message });
     }
 };
 
