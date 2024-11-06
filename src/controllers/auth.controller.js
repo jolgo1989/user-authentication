@@ -77,7 +77,7 @@ export const logout = (req, res) => {
 }
 
 export const profile = (req, res) => {
-    res.send('profile')
+    res.send('Profile')
 }
 
 // La estructura y representación de cómo se organizan los datos y cuáles son las reglas de validación al momneto  de registrar un usuario, se definio en un schema (archivo user.model.js)
