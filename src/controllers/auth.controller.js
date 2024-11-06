@@ -63,6 +63,23 @@ export const login = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// Función para cerrar sesión del usuario
+export const logout = (req, res) => {
+    // Establece una cookie 'token' vacía y le asigna una fecha de expiración.
+    // Esto elimina efectivamente la cookie del lado del cliente, cerrando la sesión del usuario.
+    res.cookie('token', '', {
+        expires: new Date(0) // La cookie expirará inmediatamente
+    })
+
+    // Devuelve un estado 200 indicando que la operación fue exitosa.
+    return res.sendStatus(200)
+}
+
+export const profile = (req, res) => {
+    res.send('profile')
+}
+
 // La estructura y representación de cómo se organizan los datos y cuáles son las reglas de validación al momneto  de registrar un usuario, se definio en un schema (archivo user.model.js)
 
 
