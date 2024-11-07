@@ -15,15 +15,21 @@ export const register = async (req, res) => {
             password: passwordHash,
         });
         const userSaved = await newUser.save();//Metodo para guardar un usuario a la db
-        const token = await createAccesToken({ id: userSaved._id })//creación del token
-        res.cookie('token', token)//Guardar el token en una cookie
-        res.json({//Mostrar datos especificos al momento de hacer un post
-            id: userSaved._id,
-            username: userSaved.username,
-            email: userSaved.email,
-            createadAt: userSaved.createdAt,//Registrar fecha de creación
-            updatedAt: userSaved.updatedAt,//Registrar fecha de actualización
+        const token = await createAccesToken({ id: userSaved._id })//creación del 
+
+        // Almacena el token de autenticación en una cookie llamada 'token' en la respuesta, 
+        // permitiendo que el cliente guarde el token de sesión
+        res.cookie('token', token)
+
+        // Envía una respuesta JSON con los datos del usuario recién guardado en la base de datos
+        res.json({
+            id: userSaved._id,            // ID del usuario
+            username: userSaved.username,  // Nombre de usuario
+            email: userSaved.email,        // Correo electrónico del usuario
+            createdAt: userSaved.createdAt, // Fecha de creación del usuario
+            updatedAt: userSaved.updatedAt // Fecha de última actualización del usuario
         })
+
         // res.json(userSaved)mostrar en json todos los datos guardados
         // res.send('Usuario registrado con éxito'); mostrar un simplemensaje al momento de registrar usuario
 
@@ -47,14 +53,18 @@ export const login = async (req, res) => {
         const token = await createAccesToken({ id: userFound._id })//Del usuario encontrado tomar su id y crear un token
 
 
-        res.cookie('token', token)//Guardar el token en una cookie
-        res.json({//Mostrar datos especificos al momento de hacer un post
-            id: userFound._id,
-            username: userFound.username,
-            email: userFound.email,
-            createadAt: userFound.createdAt,//Registrar fecha de creación
-            updatedAt: userFound.updatedAt,//Registrar fecha de actualización
+        // Almacena el token de autenticación en una cookie llamada 'token' en la respuesta
+        res.cookie('token', token)
+
+        // Envía una respuesta JSON con los datos del usuario autenticado
+        res.json({
+            id: userFound._id,            // ID del usuario
+            username: userFound.username,  // Nombre de usuario
+            email: userFound.email,        // Correo electrónico del usuario
+            createdAt: userFound.createdAt, // Fecha de creación del usuario
+            updatedAt: userFound.updatedAt // Fecha de última actualización del usuario
         })
+
         // res.json(userSaved)mostrar en json todos los datos guardados
         // res.send('Usuario registrado con éxito'); mostrar un simplemensaje al momento de registrar usuario
 
@@ -76,9 +86,24 @@ export const logout = (req, res) => {
     return res.sendStatus(200)
 }
 
-export const profile = (req, res) => {
-    res.send('Profile')
+// Controlador para obtener el perfil del usuario autenticado
+export const profile = async (req, res) => {
+    // Busca al usuario en la base de datos usando el ID almacenado en req.user.id (proveniente del token JWT)
+    const userFound = await User.findById(req.user.id)
+
+    // Si no se encuentra el usuario, responde con un estado 400 (solicitud incorrecta) y un mensaje de error
+    if (!userFound) return res.status(400).json({ message: 'Usuario no encontrado' })
+
+    // Si el usuario existe, responde con los datos del perfil del usuario
+    return res.json({
+        id: userFound._id,               // ID del usuario
+        username: userFound.username,     // Nombre de usuario
+        email: userFound.email,           // Correo electrónico del usuario
+        createdAt: userFound.createdAt,   // Fecha de creación del usuario
+        updatedAt: userFound.updatedAt    // Fecha de última actualización del usuario
+    })
 }
+
 
 // La estructura y representación de cómo se organizan los datos y cuáles son las reglas de validación al momneto  de registrar un usuario, se definio en un schema (archivo user.model.js)
 
