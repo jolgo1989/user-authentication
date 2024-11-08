@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { TOKEN_SECRET } from '../confg.js'
 
-// Middleware para verificar si el usuario está autenticado
+// Middleware para verificar si el usuario está autenticado(Proteger ruta)
 export const authRequired = (req, res, next) => {
     // Extrae el token de las cookies
     const { token } = req.cookies
