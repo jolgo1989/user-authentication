@@ -19,6 +19,12 @@ const taskSchema = new mongoose.Schema({
     date: {
         type: Date,// Tipo de dato: fecha
         default: Date.now// Valor por defecto: fecha y hora actuales
+    },
+    // Campo 'user' para asociar cada tarea con un usuario específico
+    user: {
+        type: mongoose.Schema.Types.ObjectId, // Tipo de dato: ID de objeto (ObjectId de MongoDB)
+        ref: 'User', // Referencia al modelo 'User' para establecer la relación entre tareas y usuarios
+        required: true // Campo obligatorio para identificar al usuario propietario de la tarea
     }
 }, {
     timestamps: true,// Añade automáticamente 'createdAt' y 'updatedAt' al esquema
