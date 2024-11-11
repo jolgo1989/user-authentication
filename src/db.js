@@ -1,14 +1,19 @@
 import mongoose from "mongoose"; // Módulo para conectar Mongo db
 
+// Función para conectar a la base de datos MongoDB
 export const conectDB = async () => {
     try {
-        await mongoose.connect("mongodb://localhost/merndb")//Connecting to MongoDB
-        console.log('>>> db is connected')//Message from connection
+        // Conectándose a la base de datos 'merndb' en el servidor local
+        await mongoose.connect("mongodb://localhost/merndb") // Establece la conexión con MongoDB
+
+        // Mensaje de éxito si la conexión se establece correctamente
+        console.log('>>> db is connected')
     } catch (error) {
+        // Captura y muestra cualquier error que ocurra al intentar conectar
         console.log(error)
     };
-
 }
+
 
 // export const conectDB = async () => {
 //     try {
