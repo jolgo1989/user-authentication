@@ -1,18 +1,21 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React from "react";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
 
 const App = () => {
   return (
     // Envolviendo la aplicación en BrowserRouter para habilitar el enrutamiento
-    <BrowserRouter>
+    <BrowserRouter
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+    >
       {/* Definición de rutas para la navegación */}
       <Routes>
         {/* Ruta principal que muestra "Home page" */}
         <Route path="/" element={<h1>Home page</h1>} />
         {/* Ruta de login */}
-        <Route path="/login" element={<h1>Login</h1>} />
+        <Route path="/login" element={<LoginPage />} />
         {/* Ruta de registro */}
-        <Route path="/register" element={<h1>Register</h1>} />
+        <Route path="/register" element={<RegisterPage />} />
         {/* Ruta para ver todas las tareas */}
         <Route path="/tasks" element={<h1>Tasks page</h1>} />
         {/* Ruta para agregar una nueva tarea */}

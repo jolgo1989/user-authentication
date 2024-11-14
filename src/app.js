@@ -1,12 +1,19 @@
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from "cookie-parser"
+import cors from 'cors';
 
 import authRoutes from './routes/auth.routes.js';
 import taskRoutes from './routes/tasks.routes.js';
 
 
 const app = express();
+
+
+// Configuración de CORS para permitir solicitudes desde un origen específico
+app.use(cors({
+    origin: 'http://localhost:5173', // Define el origen permitido (cliente) desde el cual se aceptarán las solicitudes
+}));
 
 app.use(morgan('dev')); // Middleware para registrar solicitudes HTTP
 app.use(express.json()); // Middleware para interpretar JSON
