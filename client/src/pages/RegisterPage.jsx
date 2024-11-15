@@ -1,17 +1,22 @@
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Componente RegisterPage para el formulario de registro de usuario
 const RegisterPage = () => {
   // Utiliza useForm para manejar la validación y los datos del formulario
   const { register, handleSubmit } = useForm();
+  const { singup, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) navigate("/tasks");
+  }, [isAuthenticated]);
 
   // Función onSubmit que se ejecuta al enviar el formulario
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values); // Muestra los valores del formulario en consola
-
-    const res = await registerRequest(values); // Envía los datos a la API de registro
-    console.log(res); // Muestra la respuesta de la API en consola
+    singup(values);
   });
 
   return (
