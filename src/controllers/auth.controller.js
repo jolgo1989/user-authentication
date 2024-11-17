@@ -8,6 +8,9 @@ export const register = async (req, res) => {
 
     try {
 
+        const userFound = await User.findOne({ email })//Comprobar si el email existe
+        if (userFound) return res.status(400).json([" The email is already in use"])//Si el email ya existe responder con el codigo de estado 400
+
         const passwordHash = await bcrypt.hash(password, 10)//pasamos el parametro contraseña y luego le indicamos la longitud de la contraseña
         const newUser = new User({
             username,

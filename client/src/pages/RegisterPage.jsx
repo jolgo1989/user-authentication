@@ -6,8 +6,13 @@ import { useNavigate } from "react-router-dom";
 // Componente RegisterPage para el formulario de registro de usuario
 const RegisterPage = () => {
   // Utiliza useForm para manejar la validación y los datos del formulario
-  const { register, handleSubmit } = useForm();
-  const { singup, isAuthenticated } = useAuth();
+  // errors: registerErrors: renombramos la variable errors por registerErrors y se utiliza para mostrar los errores de validación
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { singup, isAuthenticated, errors: registerErrors } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +26,11 @@ const RegisterPage = () => {
 
   return (
     <div className="bg-zinc-800 max-w-md p-10 rounded-md">
+      {registerErrors.map((error, i) => (
+        <div className="bg-red-500 p-2 text-white" key={i}>
+          {error}
+        </div> //Este error viene del AuthContext.jsx
+      ))}
       <form onSubmit={onSubmit}>
         {/* Campo de entrada para el nombre de usuario */}
         <input
@@ -31,6 +41,10 @@ const RegisterPage = () => {
           autoComplete="username" // Autocompletado para el campo de usuario
         />
 
+        {errors.username && (
+          <p className="text-red-500"> Username isrequired</p>
+        )}
+
         {/* Campo de entrada para el correo electrónico */}
         <input
           type="email"
@@ -40,6 +54,8 @@ const RegisterPage = () => {
           autoComplete="email" // Autocompletado para el campo de correo
         />
 
+        {errors.email && <p className="text-red-500"> Email isrequired</p>}
+
         {/* Campo de entrada para la contraseña */}
         <input
           type="password"
@@ -48,6 +64,9 @@ const RegisterPage = () => {
           placeholder="Password"
           autoComplete="new-password" // Autocompletado para la contraseña
         />
+        {errors.password && (
+          <p className="text-red-500"> Password isrequired</p>
+        )}
 
         {/* Botón para enviar el formulario */}
         <button type="submit">Register</button>
