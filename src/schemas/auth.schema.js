@@ -28,7 +28,7 @@ export const loginSchema = z.object({
     email: z.string({
         required_error: 'Email is required' // Mensaje de error si el correo electrónico no está presente
     }).email({
-        required_error: 'Email is invalid' // Mensaje de error si el correo no tiene un formato válido
+        message: 'Email is not invalid' // Mensaje de error si el correo no tiene un formato válido
     }),
 
     // Campo 'password' debe ser una cadena de texto y al menos de 6 caracteres de longitud

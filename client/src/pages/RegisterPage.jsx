@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form"; // Librería para manejar formularios y validaciones
 import { useAuth } from "../context/AuthContext"; // Contexto de autenticación personalizado
 import { useEffect } from "react"; // Hook para manejar efectos secundarios
-import { useNavigate } from "react-router-dom"; // Hook para la navegación entre rutas
+import { useNavigate, Link } from "react-router-dom"; // Hook para la navegación entre rutas
 
 // Componente RegisterPage: formulario de registro de usuario
 const RegisterPage = () => {
@@ -78,13 +78,14 @@ const RegisterPage = () => {
         )}
 
         {/* Botón para enviar el formulario */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white px-4 py-2 rounded-md"
-        >
-          Register
-        </button>
+        <button type="submit">Register</button>
       </form>
+      <p className="flex gap-x-2 justify-between">
+        Already have an account ?
+        <Link to="/login" className="text-sky-500">
+          Login
+        </Link>
+      </p>
     </div>
   );
 };

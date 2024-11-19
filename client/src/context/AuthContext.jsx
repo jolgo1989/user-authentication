@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react"; // Importamos funciones de React necesarias
+import { createContext, useState, useContext, useEffect } from "react"; // Importamos funciones de React necesarias
 import { registerRequest, loginRequest } from "../api/auth"; // Función que realiza la solicitud de registro a la API
 
 // Creación del contexto para la autenticación
@@ -39,9 +39,22 @@ export const AuthProvider = ({ children }) => {
       const res = await loginRequest(user); // Realiza una solicitud a la API de login
       console.log(res); // Imprime en consola la respuesta de la API
     } catch (error) {
-      console.log(error); // Muestra el error de la API en consola
+      if (array.isArray(error.response.data)) {
+        return setErrors(error.response.data);
+      }
+      setErrors(error.response.data.message);
     }
   };
+
+  //Metodo para limpiar los errores despues de 5 segundos
+  useEffect(() => {
+    if (errors.length > 0) {
+      const timer = setTimeout(() => {
+        setErrors([]);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errors]);
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
