@@ -36,25 +36,28 @@ export const AuthProvider = ({ children }) => {
 
   const signin = async (user) => {
     try {
-      const res = await loginRequest(user); // Realiza una solicitud a la API de login
-      console.log(res); // Imprime en consola la respuesta de la API
+      const res = await loginRequest(user); // Realiza una solicitud a la API de inicio de sesión con los datos del usuario
+      console.log(res); // Muestra en la consola la respuesta completa de la API
     } catch (error) {
-      if (array.isArray(error.response.data)) {
-        return setErrors(error.response.data);
+      // Manejo de errores en la respuesta de la API
+      if (Array.isArray(error.response.data)) {
+        // Si la respuesta del error contiene un array (ej. errores de validación)
+        return setErrors(error.response.data); // Almacena los errores en el estado `errors`
       }
-      setErrors(error.response.data.message);
+      // Si no es un array, se asume que es un mensaje de error simple
+      setErrors(error.response.data.message); // Almacena el mensaje de error en el estado `errors`
     }
   };
 
-  //Metodo para limpiar los errores despues de 5 segundos
+  // Efecto secundario para limpiar los errores después de 5 segundos
   useEffect(() => {
     if (errors.length > 0) {
       const timer = setTimeout(() => {
-        setErrors([]);
+        setErrors([]); // Limpia los errores después de 5 segundos
       }, 5000);
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer); // Limpia el temporizador cuando el componente se desmonta o los errores cambian
     }
-  }, [errors]);
+  }, [errors]); // Este efecto se ejecuta cada vez que el estado `errors` cambia
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
