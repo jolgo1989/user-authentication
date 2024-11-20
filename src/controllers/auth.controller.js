@@ -1,6 +1,9 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcryptjs'//Modulo para encriptar contraseña
 import { createAccesToken } from '../libs/jwt.js'//Modulo para crear un token
+import jwt from 'jsonwebtoken'
+import { TOKEN_SECRET } from '../confg.js';
+
 
 
 export const register = async (req, res) => {
@@ -106,6 +109,35 @@ export const profile = async (req, res) => {
         updatedAt: userFound.updatedAt    // Fecha de última actualización del usuario
     })
 }
+
+export const verifyToken = async (req, res) => {
+    // Extrae el token de las cookies enviadas en la solicitud
+    const { token } = req.cookies;
+
+    // Si no hay token, responde con un estado 401 (No autorizado)
+    if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+    // Verifica la validez del token usando la clave secreta definida (TOKEN_SECRET)
+    jwt.verify(token, TOKEN_SECRET, async (err, user) => {
+        // Si hay un error en la verificación, responde con estado 401
+        if (err) return res.status(401).json({ message: "Unauthorized" });
+
+        // Busca en la base de datos el usuario cuyo ID está en el token
+        const userFound = await User.findById(user.id);
+
+        // Si no se encuentra al usuario, responde con estado 401
+        if (!userFound) return res.status(401).json({
+            message: "Unauthorized"
+        });
+
+        // Si se encuentra al usuario, responde con su información
+        return res.json({
+            id: userFound._id, // ID del usuario
+            username: userFound.username, // Nombre de usuario
+            email: userFound.email // Correo electrónico
+        });
+    });
+};
 
 
 // La estructura y representación de cómo se organizan los datos y cuáles son las reglas de validación al momneto  de registrar un usuario, se definio en un schema (archivo user.model.js)

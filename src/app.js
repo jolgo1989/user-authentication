@@ -13,6 +13,7 @@ const app = express();
 // Configuración de CORS para permitir solicitudes desde un origen específico
 app.use(cors({
     origin: 'http://localhost:5173', // Define el origen permitido (cliente) desde el cual se aceptarán las solicitudes
+    credentials: true // Permite que las solicitudes incluyan cookies y encabezados de autenticación(Esto fue necesario agregarlo por la instancia personalizada que creamos en axios.js)
 }));
 
 app.use(morgan('dev')); // Middleware para registrar solicitudes HTTP

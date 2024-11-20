@@ -1,6 +1,7 @@
 import { createContext, useState, useContext, useEffect } from "react"; // Importamos funciones de React necesarias
-import { registerRequest, loginRequest } from "../api/auth"; // Función que realiza la solicitud de registro a la API
-
+import { registerRequest, loginRequest, verifyTokenRequest } from "../api/auth"; // Función que realiza la solicitud de registro a la API
+import Cookies from "js-cookie";
+import { set } from "mongoose";
 // Creación del contexto para la autenticación
 export const AuthContext = createContext();
 
@@ -38,6 +39,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await loginRequest(user); // Realiza una solicitud a la API de inicio de sesión con los datos del usuario
       console.log(res); // Muestra en la consola la respuesta completa de la API
+      setIsAuthenticated(true);
+      setUser(res.data);
     } catch (error) {
       // Manejo de errores en la respuesta de la API
       if (Array.isArray(error.response.data)) {
@@ -58,6 +61,31 @@ export const AuthProvider = ({ children }) => {
       return () => clearTimeout(timer); // Limpia el temporizador cuando el componente se desmonta o los errores cambian
     }
   }, [errors]); // Este efecto se ejecuta cada vez que el estado `errors` cambia
+
+  useEffect(() => {
+    const checklogin = async () => {
+      const cookies = Cookies.get();
+
+      if (cookies.token) {
+        setIsAuthenticated(false);
+        return setUser(null);
+      }
+      {
+        try {
+          const res = await verifyTokenRequest(cookies.token);
+          console.log(res);
+          if (!res.data) setIsAuthenticated(false);
+
+          setIsAuthenticated(true);
+          setUser(res.data);
+        } catch (error) {
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      }
+    };
+    checklogin();
+  }, []);
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
