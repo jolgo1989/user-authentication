@@ -5,7 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import TaskFormPage from "./pages/TaskFormPage";
 import TasksPage from "./pages/TasksPage";
 import ProfilePage from "./pages/ProfilePage";
-import HomePaje from "./pages/HomePage";
+import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const App = () => {
@@ -19,7 +19,7 @@ const App = () => {
         {/* Definición de rutas para la navegación */}
         <Routes>
           {/* Ruta principal que muestra "Home page" */}
-          <Route path="/" element={<HomePaje />} />
+          <Route path="/" element={<HomePage />} />
           {/* Ruta de login */}
           <Route path="/login" element={<LoginPage />} />
           {/* Ruta de registro */}

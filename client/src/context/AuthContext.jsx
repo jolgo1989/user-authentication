@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado para saber si el usuario está autenticado
   const [errors, setErrors] = useState([]); // Estado para almacenar errores de autenticación
 
+  const [loading, setloading] = useState(true);
+
   // Función para manejar el registro de usuarios
   const singup = async (user) => {
     try {
@@ -63,34 +65,40 @@ export const AuthProvider = ({ children }) => {
   }, [errors]); // Este efecto se ejecuta cada vez que el estado `errors` cambia
 
   useEffect(() => {
-    const checklogin = async () => {
+    async function checkLogin() {
       const cookies = Cookies.get();
 
-      if (cookies.token) {
+      if (!cookies.token) {
         setIsAuthenticated(false);
+        setloading(false);
         return setUser(null);
       }
-      {
-        try {
-          const res = await verifyTokenRequest(cookies.token);
-          console.log(res);
-          if (!res.data) setIsAuthenticated(false);
 
-          setIsAuthenticated(true);
-          setUser(res.data);
-        } catch (error) {
+      try {
+        const res = await verifyTokenRequest(cookies.token);
+        console.log(res);
+        if (!res.data) {
           setIsAuthenticated(false);
-          setUser(null);
+          setloading(false);
+          return;
         }
+
+        setIsAuthenticated(true);
+        setUser(res.data);
+        setloading(false);
+      } catch (error) {
+        setIsAuthenticated(false);
+        setUser(null);
+        setloading(false);
       }
-    };
-    checklogin();
+    }
+    checkLogin();
   }, []);
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
     <AuthContext.Provider
-      value={{ singup, signin, user, isAuthenticated, errors }} // Valores expuestos por el contexto
+      value={{ singup, loading, signin, user, isAuthenticated, errors }} // Valores expuestos por el contexto
     >
       {children} {/* Renderiza los hijos envueltos en el proveedor */}
     </AuthContext.Provider>
