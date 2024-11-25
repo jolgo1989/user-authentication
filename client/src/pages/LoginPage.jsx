@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form"; // Hook para manejar formularios con validación
 import { useAuth } from "../context/AuthContext"; // Contexto para manejar autenticación
-import { Link } from "react-router-dom"; // Navegación entre rutas
+import { Link, useNavigate } from "react-router-dom"; // Navegación entre rutas
 
 const LoginPage = () => {
   // Desestructuración de funciones y estados de useForm
@@ -12,12 +12,23 @@ const LoginPage = () => {
   } = useForm();
 
   // Desestructuración de funciones y errores del contexto de autenticación
-  const { signin, errors: signinErrors } = useAuth();
+  const { signin, errors: signinErrors, isAuthenticated } = useAuth();
+
+  const navigate = useNavigate();
 
   // Maneja el evento de envío del formulario
   const onSubmit = handleSubmit((data) => {
     signin(data); // Llama a la función signin del contexto con los datos del formulario
   });
+
+  useEffect(() => {
+    // Verifica si el usuario está autenticado
+    if (isAuthenticated) {
+      // Si el usuario está autenticado, redirige a la ruta "/tasks"
+      navigate("/tasks");
+    }
+    // Este efecto se ejecutará cada vez que cambie el valor de "isAuthenticated"
+  }, [isAuthenticated]);
 
   return (
     <div className="flex h-[calc(100vh-100px)] items-center justify-center">

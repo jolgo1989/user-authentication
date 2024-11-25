@@ -8,7 +8,7 @@ const TaskFormPage = () => {
   console.log(createTask());
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    createTask(data);
   });
 
   return (

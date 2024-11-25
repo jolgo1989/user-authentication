@@ -24,6 +24,15 @@ const RegisterPage = () => {
     if (isAuthenticated) navigate("/tasks");
   }, [isAuthenticated]); // Dependencia: isAuthenticated
 
+  useEffect(() => {
+    // Verifica si el usuario está autenticado
+    if (isAuthenticated) {
+      // Si el usuario está autenticado, redirige a la ruta "/tasks"
+      navigate("/tasks");
+    }
+    // Este efecto se ejecutará cada vez que cambie el valor de "isAuthenticated"
+  }, [isAuthenticated]);
+
   // Función que se ejecuta cuando se envía el formulario
   const onSubmit = handleSubmit(async (values) => {
     singup(values); // Llama a la función de registro del contexto de autenticación
