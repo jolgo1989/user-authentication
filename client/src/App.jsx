@@ -8,6 +8,7 @@ import ProfilePage from "./pages/ProfilePage";
 import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./ProtectedRoute";
 import { TasksProvider } from "./context/TasksContext";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <BrowserRouter
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
         >
+          <Navbar />
           {/* Definición de rutas para la navegación */}
           <Routes>
             {/* Ruta principal que muestra "Home page" */}

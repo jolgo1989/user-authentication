@@ -54,6 +54,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  //Metodo para cerrar sesión
+  const logout = () => {
+    // Elimina el token de autenticación almacenado en las cookies
+    Cookies.remove("token");
+
+    // Actualiza el estado para indicar que el usuario ya no está autenticado
+    setIsAuthenticated(false);
+
+    // Restablece el estado del usuario a null, eliminando la información del usuario actual
+    setUser(null);
+  };
+
   // Efecto secundario para limpiar los errores después de 5 segundos
   useEffect(() => {
     if (errors.length > 0) {
@@ -98,7 +110,7 @@ export const AuthProvider = ({ children }) => {
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
     <AuthContext.Provider
-      value={{ singup, loading, signin, user, isAuthenticated, errors }} // Valores expuestos por el contexto
+      value={{ singup, signin, logout, loading, user, isAuthenticated, errors }} // Valores expuestos por el contexto
     >
       {children} {/* Renderiza los hijos envueltos en el proveedor */}
     </AuthContext.Provider>
