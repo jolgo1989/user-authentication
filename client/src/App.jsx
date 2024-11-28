@@ -19,28 +19,30 @@ const App = () => {
         <BrowserRouter
           future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
         >
-          <Navbar />
-          {/* Definición de rutas para la navegación */}
-          <Routes>
-            {/* Ruta principal que muestra "Home page" */}
-            <Route path="/" element={<HomePage />} />
-            {/* Ruta de login */}
-            <Route path="/login" element={<LoginPage />} />
-            {/* Ruta de registro */}
-            <Route path="/register" element={<RegisterPage />} />
+          <main className="container mx-auto px-10">
+            <Navbar />
+            {/* Definición de rutas para la navegación */}
+            <Routes>
+              {/* Ruta principal que muestra "Home page" */}
+              <Route path="/" element={<HomePage />} />
+              {/* Ruta de login */}
+              <Route path="/login" element={<LoginPage />} />
+              {/* Ruta de registro */}
+              <Route path="/register" element={<RegisterPage />} />
 
-            {/* Rutas protegidas */}
-            <Route element={<ProtectedRoute />}>
-              {/* Ruta para ver todas las tareas */}
-              <Route path="/tasks" element={<TasksPage />} />
-              {/* Ruta para agregar una nueva tarea */}
-              <Route path="/add-task" element={<TaskFormPage />} />
-              {/* Ruta para actualizar una tarea específica, donde ":id" representa el ID de la tarea */}
-              <Route path="/tasks/:id" element={<TaskFormPage />} />
-              {/* Ruta del perfil del usuario */}
-              <Route path="/profile" element={<ProfilePage />} />
-            </Route>
-          </Routes>
+              {/* Rutas protegidas */}
+              <Route element={<ProtectedRoute />}>
+                {/* Ruta para ver todas las tareas */}
+                <Route path="/tasks" element={<TasksPage />} />
+                {/* Ruta para agregar una nueva tarea */}
+                <Route path="/add-task" element={<TaskFormPage />} />
+                {/* Ruta para actualizar una tarea específica, donde ":id" representa el ID de la tarea */}
+                <Route path="/tasks/:id" element={<TaskFormPage />} />
+                {/* Ruta del perfil del usuario */}
+                <Route path="/profile" element={<ProfilePage />} />
+              </Route>
+            </Routes>
+          </main>
         </BrowserRouter>
       </TasksProvider>
     </AuthProvider>
